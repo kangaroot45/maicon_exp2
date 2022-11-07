@@ -16,8 +16,6 @@ def cross_entropy(input, target, weight=None, reduction='mean',ignore_index=255)
         target = torch.squeeze(target, dim=1)
     if input.shape[-1] != target.shape[-1]:
         input = F.interpolate(input, size=target.shape[1:], mode='bilinear',align_corners=True)
-    print('input :',input.size())
-    print('target :',target.size())
     return F.cross_entropy(input=input, target=target, weight=weight,
                            ignore_index=ignore_index, reduction=reduction)
 

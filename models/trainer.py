@@ -1,3 +1,20 @@
+import wandb
+wandb.init(project="maicon_pre_sq_shadow")
+wandb.config = {
+    "img_size" : 256,
+    "batch_size" : 16,
+    "lr" : 0.0001,
+    "max_epochs" : 200,
+    "embed_dim" : 256,
+    "n_class" : 2,
+    "lr_policy" : "linear",
+    "optimizer" : "adamw",
+    "loss" : "ce",
+    "multi_scale_train" : True,
+    "multi_scale_infer" : False,
+    "shuffle_AB" : False
+}
+
 import numpy as np
 import matplotlib.pyplot as plt
 import os
@@ -233,7 +250,7 @@ class CDTrainer():
 
     def _collect_epoch_states(self):
         scores = self.running_metric.get_scores()
-        self.epoch_acc = scores['mf1']
+        self.epoch_acc = scores['miou']
         self.logger.write('Is_training: %s. Epoch %d / %d, epoch_mF1= %.5f\n' %
               (self.is_training, self.epoch_id, self.max_num_epochs-1, self.epoch_acc))
         message = ''
@@ -298,8 +315,6 @@ class CDTrainer():
             for pred in self.G_pred:
                 if pred.size(2) != gt.size(2):
                     tmp = self._pxl_loss(pred, F.interpolate(gt, size=pred.size(2), mode="nearest"))
-                    print('predsize :',pred.size())
-                    print('tmpsize :',tmp.size())
                     temp_loss = temp_loss + self.weights[i]*self._pxl_loss(pred, F.interpolate(gt, size=pred.size(2), mode="nearest"))
                 else:
                     temp_loss = temp_loss + self.weights[i]*self._pxl_loss(pred, gt)
@@ -353,6 +368,14 @@ class CDTrainer():
                     self._forward_pass(batch)
                 self._collect_running_batch_states()
             self._collect_epoch_states()
+
+            # Update on wandb
+            ss = self.running_metric.get_scores()
+            wandb.log({
+                "Accuracy": ss['acc'],
+                "mIoU" : ss['miou'],
+                "mf1" : ss['mf1']
+            }, step=self.epoch_id)
 
             ########### Update_Checkpoints ###########
             ##########################################

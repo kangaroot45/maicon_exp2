@@ -1,0 +1,11 @@
+*.pyc
+*.DS_Store
+./sha256
+./sha256.pub
+
+pretrained/
+samples_DSIFN/
+samples_LEVIR/
+checkpoints/
+
+wandb/
