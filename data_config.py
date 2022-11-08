@@ -45,6 +45,12 @@ class DataConfig:
         elif data_name == 'AI-HUB_Sq_Shadow':
             self.label_transform = "norm"
             self.root_dir = 'D:/Developments/Dataset/AI-HUB_Sq_Shadow/'
+        elif data_name == 'AI-HUB_Sq_Hist':
+            self.label_transform = "norm24"
+            self.root_dir = 'D:/Developments/Dataset/AI-HUB_Sq_Hist/'
+        elif data_name == 'AI-HUB_Multilabel':
+            self.label_transform = "four"
+            self.root_dir = 'C:/Users/Navy/Desktop/images/to256'
         else:
             raise TypeError('%s has not defined' % data_name)
         return self

@@ -95,6 +95,22 @@ if __name__ == '__main__':
     args.vis_dir = os.path.join(args.vis_root, args.project_name)
     os.makedirs(args.vis_dir, exist_ok=True)
 
+    """wandb.init(project="maicon_pre_sq_shadow", entity="kangaroot45", name=args.data_name)
+    wandb.config = {
+        "img_size" : 256,
+        "batch_size" : 16,
+        "lr" : 0.0001,
+        "max_epochs" : 200,
+        "embed_dim" : 256,
+        "n_class" : 2,
+        "lr_policy" : "linear",
+        "optimizer" : "adamw",
+        "loss" : "ce",
+        "multi_scale_train" : True,
+        "multi_scale_infer" : False,
+        "shuffle_AB" : False
+    }"""
+
     seed_everything(2022)
 
     train(args)

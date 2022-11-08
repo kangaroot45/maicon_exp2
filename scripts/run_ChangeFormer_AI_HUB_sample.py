@@ -18,7 +18,7 @@ Chooses dataset from below: data_name
 if __name__ == "__main__":
     gpus = 0
 
-    version = "Sq_Hist"
+    version = "Multilabel"
 
     checkpoint_root=f"D:/Developments/AI-HUB_Results/{version}/checkpoints/"
     vis_root=f"D:/Developments/AI-HUB_Results/{version}/vis/"
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     max_epochs=200
     embed_dim=256
 
-    n_class = 2
+    n_class = 4
 
     net_G="ChangeFormerV6"
 

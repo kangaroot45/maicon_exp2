@@ -6,8 +6,8 @@ import torch.nn as nn
 def cross_entropy(input, target, weight=None, reduction='mean',ignore_index=255):
     """
     logSoftmax_with_loss
-    :param input: torch.Tensor, N*C*H*W
-    :param target: torch.Tensor, N*1*H*W,/ N*H*W
+    :param input: torch.Tensor, N*C*H*W as y_pred
+    :param target: torch.Tensor, N*1*H*W,/ N*H*W as y_true
     :param weight: torch.Tensor, C
     :return: torch.Tensor [0]
     """

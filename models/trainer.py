@@ -1,19 +1,4 @@
 import wandb
-wandb.init(project="maicon_pre_sq_shadow")
-wandb.config = {
-    "img_size" : 256,
-    "batch_size" : 16,
-    "lr" : 0.0001,
-    "max_epochs" : 200,
-    "embed_dim" : 256,
-    "n_class" : 2,
-    "lr_policy" : "linear",
-    "optimizer" : "adamw",
-    "loss" : "ce",
-    "multi_scale_train" : True,
-    "multi_scale_infer" : False,
-    "shuffle_AB" : False
-}
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -71,6 +56,7 @@ class CDTrainer():
         # define lr schedulers
         self.exp_lr_scheduler_G = get_scheduler(self.optimizer_G, args)
 
+        #self.running_metric = ConfuseMatrixMeter(n_class=self.n_class)
         self.running_metric = ConfuseMatrixMeter(n_class=2)
 
         # define logger file
@@ -314,7 +300,7 @@ class CDTrainer():
             temp_loss = 0.0
             for pred in self.G_pred:
                 if pred.size(2) != gt.size(2):
-                    tmp = self._pxl_loss(pred, F.interpolate(gt, size=pred.size(2), mode="nearest"))
+                    #tmp = self._pxl_loss(pred, F.interpolate(gt, size=pred.size(2), mode="nearest"))
                     temp_loss = temp_loss + self.weights[i]*self._pxl_loss(pred, F.interpolate(gt, size=pred.size(2), mode="nearest"))
                 else:
                     temp_loss = temp_loss + self.weights[i]*self._pxl_loss(pred, gt)
@@ -369,13 +355,13 @@ class CDTrainer():
                 self._collect_running_batch_states()
             self._collect_epoch_states()
 
-            # Update on wandb
+            """# Update on wandb
             ss = self.running_metric.get_scores()
             wandb.log({
                 "Accuracy": ss['acc'],
                 "mIoU" : ss['miou'],
                 "mf1" : ss['mf1']
-            }, step=self.epoch_id)
+            }, step=self.epoch_id)"""
 
             ########### Update_Checkpoints ###########
             ##########################################
