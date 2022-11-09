@@ -50,7 +50,10 @@ class DataConfig:
             self.root_dir = 'D:/Developments/Dataset/AI-HUB_Sq_Hist/'
         elif data_name == 'AI-HUB_Multilabel':
             self.label_transform = "four"
-            self.root_dir = 'C:/Users/Navy/Desktop/images/to256'
+            self.root_dir = 'C:/Users/Navy/Desktop/images/to256/'
+        elif data_name == 'MAICON_Original':
+            self.label_transform = "maicon24"
+            self.root_dir = 'C:/Users/Navy/Desktop/CF_Dataset/'
         else:
             raise TypeError('%s has not defined' % data_name)
         return self

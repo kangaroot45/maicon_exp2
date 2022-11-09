@@ -82,8 +82,8 @@ class ImageDataset(data.Dataset):
         A_path = get_img_path(self.root_dir, self.img_name_list[index % self.A_size])
         B_path = get_img_post_path(self.root_dir, self.img_name_list[index % self.A_size])
 
-        img = np.asarray(Image.open(A_path).convert('RGB'))
-        img_B = np.asarray(Image.open(B_path).convert('RGB'))
+        img = np.asarray(Image.open(A_path).convert('RGB').resize((256,256)))
+        img_B = np.asarray(Image.open(B_path).convert('RGB').resize((256,256)))
 
         [img, img_B], _ = self.augm.transform([img, img_B],[], to_tensor=self.to_tensor)
 
@@ -106,8 +106,8 @@ class CDDataset(ImageDataset):
         name = self.img_name_list[index]
         A_path = get_img_path(self.root_dir, self.img_name_list[index % self.A_size])
         B_path = get_img_post_path(self.root_dir, self.img_name_list[index % self.A_size])
-        img = np.asarray(Image.open(A_path).convert('RGB'))
-        img_B = np.asarray(Image.open(B_path).convert('RGB'))
+        img = np.asarray(Image.open(A_path).convert('RGB').resize((256,256)))
+        img_B = np.asarray(Image.open(B_path).convert('RGB').resize((256,256)))
         L_path = get_label_path(self.root_dir, self.img_name_list[index % self.A_size])
         
         label = np.array(Image.open(L_path), dtype=np.uint8)
@@ -118,7 +118,10 @@ class CDDataset(ImageDataset):
         #binary label with 24bit
         elif self.label_transform == 'norm24':
             label = label[:,:,0] // IGNORE
-        #quad label with 24bit
+        elif self.label_transform == 'maicon24':
+            label = label[:,:,0] // 1
+            #label = np.eye(4, dtype='uint8')[label]
+        """#quad label with 24bit
         elif self.label_transform == 'four':
             r_label = label[..., 0] // IGNORE * 1
             g_label = label[..., 1] // IGNORE * 2
@@ -126,7 +129,7 @@ class CDDataset(ImageDataset):
             new_label = r_label + g_label + b_label
             #label = np.eye(4, dtype='uint8')[new_label]
             label = new_label
-        #print(label.shape)
+        #print(label.shape)"""
 
         [img, img_B], [label] = self.augm.transform([img, img_B], [label], to_tensor=self.to_tensor)
         # print(label.max())

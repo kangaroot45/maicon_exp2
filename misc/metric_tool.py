@@ -59,6 +59,7 @@ class ConfuseMatrixMeter(AverageMeter):
         return current_score
 
     def get_scores(self):
+        print(self.sum)
         scores_dict = cm2score(self.sum)
         return scores_dict
 

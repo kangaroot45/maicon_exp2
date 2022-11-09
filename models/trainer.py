@@ -56,8 +56,8 @@ class CDTrainer():
         # define lr schedulers
         self.exp_lr_scheduler_G = get_scheduler(self.optimizer_G, args)
 
-        #self.running_metric = ConfuseMatrixMeter(n_class=self.n_class)
-        self.running_metric = ConfuseMatrixMeter(n_class=2)
+        self.running_metric = ConfuseMatrixMeter(n_class=self.n_class)
+        #self.running_metric = ConfuseMatrixMeter(n_class=2)
 
         # define logger file
         logger_path = os.path.join(args.checkpoint_dir, 'log.txt')
@@ -295,6 +295,7 @@ class CDTrainer():
             
     def _backward_G(self):
         gt = self.batch['L'].to(self.device).float()
+        #gt = torch.argmax(self.batch['L'], dim=4).to(self.device).float()
         if self.multi_scale_train == "True":
             i         = 0
             temp_loss = 0.0
@@ -355,13 +356,15 @@ class CDTrainer():
                 self._collect_running_batch_states()
             self._collect_epoch_states()
 
-            """# Update on wandb
+            """
+            #Update on wandb
             ss = self.running_metric.get_scores()
             wandb.log({
                 "Accuracy": ss['acc'],
                 "mIoU" : ss['miou'],
                 "mf1" : ss['mf1']
-            }, step=self.epoch_id)"""
+            }, step=self.epoch_id)
+            #"""
 
             ########### Update_Checkpoints ###########
             ##########################################

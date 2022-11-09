@@ -12,6 +12,8 @@ def cross_entropy(input, target, weight=None, reduction='mean',ignore_index=255)
     :return: torch.Tensor [0]
     """
     target = target.long()
+    #print('input shape :',input.shape)
+    #print('target shape :',target.shape)
     if target.dim() == 4:
         target = torch.squeeze(target, dim=1)
     if input.shape[-1] != target.shape[-1]:
